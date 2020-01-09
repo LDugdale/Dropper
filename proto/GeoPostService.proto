@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package proto;
+
+service GeoPostService {
+    rpc AddGeoPost(AddGeoPostParameters) returns (AddGeoPostReturn) {}
+}
+
+message AddGeoPostParameters {}
+
+message AddGeoPostReturn {
+    string version = 1;
+}

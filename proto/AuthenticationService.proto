@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+service AuthenticationService {
+    rpc CreateToken(UserAuthenticationDetails) returns (CreateTokenResult) {}
+    rpc ValidateToken(Token) returns (ValidateTokenResult) {}
+    rpc RefreshToken(Token) returns (CreateTokenResult) {}
+}
+
+message UserAuthenticationDetails {
+    string username = 1;
+}
+
+message CreateTokenResult {
+    bool isSuccess = 1;
+    int32 statusCode = 2;
+    string token = 3;
+}
+
+message Token {
+    string token = 1;
+}
+
+message ValidateTokenResult {
+    bool isSuccess = 1;
+    int32 statusCode = 2;}
