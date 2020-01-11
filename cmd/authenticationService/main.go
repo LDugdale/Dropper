@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	pb "github.com/LDugdale/Dropper/proto"
-	"github.com/ldugdale/dropper/pkg/authenticationService"
+	"github.com/ldugdale/dropper/pkg/services/authenticationService"
 	"github.com/LDugdale/Dropper/pkg/gRpc"
 )
 
@@ -12,7 +12,7 @@ var port = *flag.String("l", ":7100", "Specify the port that the server will lis
 func main() {
 
 	service := initializeAuthenticationService()
-
+	
 	server := gRpc.SetUpServer(port)
 
 	pb.RegisterAuthenticationServiceServer(server, service)

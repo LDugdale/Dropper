@@ -1,7 +1,7 @@
 package geoPost
 
 import (
-	"github.com/ldugdale/dropper/pkg/logger"
+	"github.com/ldugdale/dropper/pkg/log"
 	pb "github.com/LDugdale/Dropper/proto"
 	"golang.org/x/net/context"
 )
@@ -11,11 +11,11 @@ type geoPostRepository interface {
 }
 
 type GeoPostService struct {
-	logger logger.ILogger
+	logger log.Logger
 	repository geoPostRepository
 }
 
-func NewGeoPostService(logger logger.ILogger) GeoPostService {
+func NewGeoPostService(logger log.Logger) GeoPostService {
 	return GeoPostService{
 		logger: logger,
 	}

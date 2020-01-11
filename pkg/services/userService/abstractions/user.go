@@ -1,4 +1,4 @@
-package types
+package abstractions
 
 type UserModel struct {
 	Username string

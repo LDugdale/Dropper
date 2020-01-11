@@ -38,26 +38,20 @@ func run() error {
 
 func initializeGateway() gateway.Controller {
 
-	conn := initializeConnectionToServer()
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("Did not connect: %v", err)
+	}
+	
+	//defer conn.Close()
 
 	geoPostServiceClient := pb.NewGeoPostServiceClient(conn)
 	authenticationServiceClient := pb.NewAuthenticationServiceClient(conn)
 	userServiceClient := pb.NewUserServiceClient(conn)
 
-
 	logger := logger.NewLogger()
+	
 	controller := gateway.NewController(logger, geoPostServiceClient, authenticationServiceClient, userServiceClient)
 
 	return controller
-}
-
-func initializeConnectionToServer() *grpc.ClientConn{
-
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("Did not connect: %v", err)
-	}
-	//defer conn.Close()
-
-	return conn
 }

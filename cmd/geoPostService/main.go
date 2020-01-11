@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	pb "github.com/LDugdale/Dropper/proto"
-	"github.com/ldugdale/dropper/pkg/geoPostService"
-	"github.com/ldugdale/dropper/pkg/logger"
+	"github.com/ldugdale/dropper/pkg/services/geoPostService"
+	"github.com/ldugdale/dropper/pkg/log"
 	"github.com/LDugdale/Dropper/pkg/gRpc"
 )
 
@@ -15,13 +15,13 @@ func main() {
 	service := initializeGeoPostService()
 
 	server := gRpc.SetUpServer(port)
-
+	
 	pb.RegisterGeoPostServiceServer(server, service)
 }
 
 func initializeGeoPostService() geoPost.GeoPostService {
 
-	logger := logger.NewLogger()
+	logger := log.NewLogger()
 
 	geoPostService := geoPost.NewGeoPostService(logger)
 

@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
     //"io/ioutil"
@@ -6,28 +6,28 @@ import (
     "os"
 )
 
-type ILogger interface {
+type Logger interface {
 	LogTrace(v ...interface{})	
-	LogInfo(message string)	
-	LogWarning(message string)	
-	LogError(message string) 
+	LogInfo(v ...interface{})	
+	LogWarning(v ...interface{})	
+	LogError(v ...interface{}) 
 }
 
-type Logger struct {
+type GoLogger struct {
     Trace   *log.Logger
     Info    *log.Logger
     Warning *log.Logger
     Error   *log.Logger
 }
 
-func NewLogger() *Logger {
+func NewLogger() Logger {
 
 	traceHandle := os.Stdout
 	infoHandle := os.Stdout
 	warningHandle := os.Stdout
 	errorHandle := os.Stderr
 
-	l := &Logger {
+	l := &GoLogger {
 	Trace: log.New(traceHandle,
         "TRACE: ",
         log.Ldate|log.Ltime|log.Lshortfile),
@@ -48,18 +48,18 @@ func NewLogger() *Logger {
 	return l
 }
 
-func (l Logger) LogTrace(v ...interface{}) {
+func (l GoLogger) LogTrace(v ...interface{}) {
 	l.Trace.Println(v)
 }
 
-func (l Logger) LogInfo(message string) {
-	l.Info.Println(message)
+func (l GoLogger) LogInfo(v ...interface{}) {
+	l.Info.Println(v)
 }
 
-func (l Logger) LogWarning(message string) {
-	l.Warning.Println(message)
+func (l GoLogger) LogWarning(v ...interface{}) {
+	l.Warning.Println(v)
 }
 
-func (l Logger) LogError(message string) {
-	l.Error.Println(message)
+func (l GoLogger) LogError(v ...interface{}) {
+	l.Error.Println(v)
 }

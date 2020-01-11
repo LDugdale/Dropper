@@ -2,14 +2,16 @@ package main
 
 import (
 	"net"
-	"fmt"
 	"log"
 	pb "github.com/LDugdale/Dropper/proto"
 	"github.com/ldugdale/dropper/pkg/logger"
-	"github.com/LDugdale/Dropper/pkg/gRpc"
-	"github.com/ldugdale/dropper/pkg/userService"
+	//"github.com/LDugdale/Dropper/pkg/gRpc"
+	"google.golang.org/grpc"
 	"github.com/ldugdale/dropper/pkg/database"
-
+	"github.com/ldugdale/dropper/pkg/services/userService/controller"
+	"github.com/ldugdale/dropper/pkg/services/userService/services"
+	"github.com/ldugdale/dropper/pkg/services/userService/data"
+	"github.com/ldugdale/dropper/pkg/cryptography"
 )
 
 var port = "localhost:7100"
@@ -20,37 +22,36 @@ func main() {
 
 	service := initializeUserService()
 
-	server := gRpc.SetUpServer(port)
+	//server := gRpc.SetUpServer(port)
 
 
-	netListener := getNetListener(7100)
-	    // start the server
-    if err := server.Serve(netListener); err != nil {
-        log.Fatalf("failed to serve: %s", err)
-    }
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
 
+	server := grpc.NewServer()
 	pb.RegisterUserServiceServer(server, service)
+
+	log.Println("Running on port:", port)
+	if err := server.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
 }
 
-func initializeUserService() *userService.UserService {
+func initializeUserService() *controller.UserServiceServer {
 
 	database, err := database.NewDB(dataSourceName)
 	if err != nil {
         log.Panic(err)
 	}
 	logger := logger.NewLogger()
-	userRepository := *userService.NewUserRepository(*database)
-	userService := userService.NewUserService(&userRepository, logger)
+	passwordHasher := cryptography.NewPasswordHasher()
+
+	userRepository := *data.NewUserRepository(*database)
+	userService := services.NewUserService(logger, &userRepository, passwordHasher)
+	userServiceServer := controller.NewUserServiceServer(logger, userService)
 	
-	return userService
-}
-
-func getNetListener(port uint) net.Listener {
-    lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
-    if err != nil {
-        log.Fatalf("failed to listen: %v", err)
-        panic(fmt.Sprintf("failed to listen: %v", err))
-    }
-
-    return lis
+	return userServiceServer
 }

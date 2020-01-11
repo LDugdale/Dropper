@@ -1,17 +1,10 @@
-package userService
+package data
 
 import (
     "github.com/ldugdale/dropper/pkg/database"
-    "github.com/LDugdale/Dropper/pkg/types"
+    "github.com/LDugdale/Dropper/pkg/services/userService/abstractions"
     "database/sql"
 )
-
-type Book struct {
-    Isbn   string
-    Title  string
-    Author string
-    Price  float32
-}
 
 type UserRepository struct {
 	db database.DB
@@ -23,11 +16,11 @@ func NewUserRepository(db database.DB) *UserRepository {
     }
 }
 
-func (ur *UserRepository) CreateUser(user *types.UserModel) (int64, error) {
-    
+func (ur *UserRepository) CreateUser(user *abstractions.UserModel) (int64, error) {
+
     insertUserStatement := `
         INSERT INTO Users (username, password)
-        SELECT '$1', '$2'
+        SELECT ` + user.Username + `, ` + user.Password + `
         WHERE NOT EXISTS (
             SELECT 
                 username,
@@ -51,12 +44,12 @@ func (ur *UserRepository) CreateUser(user *types.UserModel) (int64, error) {
     return rowsAffected, nil
 }
 
-func (ur *UserRepository) GetUser(username string) (*types.User, error) {
+func (ur *UserRepository) GetUser(username string) (*abstractions.UserModel, error) {
 
     row := ur.db.QueryRow("SELECT * FROM Users WHERE Username = $1 LIMIT 1", username)
 
-    user := new(types.User)
-    err := row.Scan(&user.Username)
+    user := new(abstractions.UserModel)
+    err := row.Scan(&user.Username, &user.Password)
     if err == sql.ErrNoRows {
       return nil, err
     } else if err != nil {

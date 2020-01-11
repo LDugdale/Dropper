@@ -1,4 +1,4 @@
-package userService
+package cryptography
 
 import (
 	"log"
@@ -9,7 +9,11 @@ type PasswordHasher struct {
 
 }
 
-func (ph *PasswordHasher)hashAndSalt(password string) (*string, error) {
+func NewPasswordHasher() *PasswordHasher {
+    return &PasswordHasher{}
+}
+
+func (ph *PasswordHasher)HashAndSalt(password string) (*string, error) {
 
     hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
     if err != nil {
@@ -21,7 +25,7 @@ func (ph *PasswordHasher)hashAndSalt(password string) (*string, error) {
     return &hashedPassword, nil
 }
 
-func (ph *PasswordHasher)comparePasswords(hashedPwd string, paswordToCompare string) bool {
+func (ph *PasswordHasher)ComparePasswords(hashedPwd string, paswordToCompare string) bool {
 	
     byteHash := []byte(hashedPwd)
     err := bcrypt.CompareHashAndPassword(byteHash, []byte(paswordToCompare))
