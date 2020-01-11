@@ -20,18 +20,18 @@ func (ur *UserRepository) CreateUser(user *abstractions.UserModel) (int64, error
 
     insertUserStatement := `
         INSERT INTO Users (username, password)
-        SELECT ` + user.Username + `, ` + user.Password + `
+        SELECT ? , ?
         WHERE NOT EXISTS (
             SELECT 
                 username,
                 password
             FROM Users
-            WHERE username = ($1)
+            WHERE username = ?
             LIMIT 1
         );
     `
 
-    result, err := ur.db.Exec(insertUserStatement, user.Username, user.Password)
+    result, err := ur.db.Exec(insertUserStatement, user.Username, user.Password, user.Username)
     if err != nil {
       return -1, err
     }

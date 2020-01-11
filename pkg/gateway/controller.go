@@ -4,19 +4,19 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/ldugdale/dropper/pkg/logger"
+	"github.com/ldugdale/dropper/pkg/log"
 	pb "github.com/LDugdale/Dropper/proto"
 )
 
 type Controller struct {
 	Router *mux.Router
-	logger logger.ILogger
+	logger log.Logger
 	geoPostServiceClient pb.GeoPostServiceClient
 	authenticationServiceClient pb.AuthenticationServiceClient
 	userServiceClient pb.UserServiceClient
 }
 
-func NewController(logger logger.ILogger, geoPostServiceClient pb.GeoPostServiceClient, authenticationServiceClient pb.AuthenticationServiceClient, userServiceClient pb.UserServiceClient) Controller {
+func NewController(logger log.Logger, geoPostServiceClient pb.GeoPostServiceClient, authenticationServiceClient pb.AuthenticationServiceClient, userServiceClient pb.UserServiceClient) Controller {
 	
 	c := Controller{
 		Router: mux.NewRouter().StrictSlash(true),

@@ -3,16 +3,16 @@ package controller
 import (
 	"golang.org/x/net/context"
 	"github.com/LDugdale/Dropper/pkg/services/userService/abstractions"
-	"github.com/ldugdale/dropper/pkg/logger"
+	"github.com/ldugdale/dropper/pkg/log"
 	pb "github.com/LDugdale/Dropper/proto"
 )
 
 type UserServiceServer struct {
-	logger logger.ILogger
+	logger log.Logger
 	userService abstractions.UserService
 }
 
-func NewUserServiceServer(logger logger.ILogger, userService abstractions.UserService) *UserServiceServer {
+func NewUserServiceServer(logger log.Logger, userService abstractions.UserService) *UserServiceServer {
 	return &UserServiceServer{
 		logger: logger,
 		userService: userService,
@@ -58,4 +58,5 @@ func (us *UserServiceServer) SignIn(context context.Context, userDetails *pb.Use
 		Username: result.Username,
 	}
 
-	return signInResult, nil}
+	return signInResult, nil
+}

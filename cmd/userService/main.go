@@ -2,9 +2,8 @@ package main
 
 import (
 	"net"
-	"log"
 	pb "github.com/LDugdale/Dropper/proto"
-	"github.com/ldugdale/dropper/pkg/logger"
+	"github.com/ldugdale/dropper/pkg/log"
 	//"github.com/LDugdale/Dropper/pkg/gRpc"
 	"google.golang.org/grpc"
 	"github.com/ldugdale/dropper/pkg/database"
@@ -20,33 +19,34 @@ var dataSourceName = "root:password@(localhost)/dropper"
 
 func main() {
 
-	service := initializeUserService()
+	logger := log.NewLogger()
+
+	service := initializeUserService(logger)
 
 	//server := gRpc.SetUpServer(port)
 
-
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		logger.LogError("failed to listen: %v", err)
 	}
 
 	server := grpc.NewServer()
 	pb.RegisterUserServiceServer(server, service)
 
-	log.Println("Running on port:", port)
+	logger.LogTrace("Running on port:", port)
 	if err := server.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		logger.LogError("failed to serve: %v", err)
 	}
 
 }
 
-func initializeUserService() *controller.UserServiceServer {
+func initializeUserService(logger log.Logger) *controller.UserServiceServer {
 
 	database, err := database.NewDB(dataSourceName)
 	if err != nil {
-        log.Panic(err)
+        logger.LogError(err)
 	}
-	logger := logger.NewLogger()
+
 	passwordHasher := cryptography.NewPasswordHasher()
 
 	userRepository := *data.NewUserRepository(*database)
