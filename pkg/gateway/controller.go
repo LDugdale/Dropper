@@ -1,42 +1,25 @@
 package gateway
 
 import (
-	"net/http"
-	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/ldugdale/dropper/pkg/log"
-	pb "github.com/LDugdale/Dropper/proto"
+	"github.com/ldugdale/dropper/pkg/gateway/controllers"
 )
 
 type Controller struct {
-	Router *mux.Router
 	logger log.Logger
-	geoPostServiceClient pb.GeoPostServiceClient
-	authenticationServiceClient pb.AuthenticationServiceClient
-	userServiceClient pb.UserServiceClient
+	userController controllers.UserController
 }
 
-func NewController(logger log.Logger, geoPostServiceClient pb.GeoPostServiceClient, authenticationServiceClient pb.AuthenticationServiceClient, userServiceClient pb.UserServiceClient) Controller {
+func NewController(logger log.Logger, userController controllers.UserController) *Controller {
 	
-	c := Controller{
-		Router: mux.NewRouter().StrictSlash(true),
+	controller := &Controller{
 		logger: logger,
-		geoPostServiceClient: geoPostServiceClient,
-		authenticationServiceClient: authenticationServiceClient,
-		userServiceClient: userServiceClient,		
+		userController: userController,
 	}
 
-	c.routes()
-	c.userRoutes()
-	return c
+	return controller
 }
 
-func (c *Controller) respond(w http.ResponseWriter, r *http.Request, data interface{}, status int){
-
-	w.WriteHeader(status)
-	if data != nil {
-		if err := json.NewEncoder(w).Encode(data); err != nil {
-			c.logger.LogError("Error ocurred")
-		}
-	}
+func (c *Controller) Start(){
+	c.userController.Routes()
 }

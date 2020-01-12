@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 
+	"github.com/ldugdale/dropper/pkg/commonAbstractions"
 	"github.com/LDugdale/Dropper/pkg/services/userService/abstractions"
 	"github.com/ldugdale/dropper/pkg/log"
 	"github.com/ldugdale/dropper/pkg/cryptography"
@@ -22,9 +23,10 @@ func NewUserService(logger log.Logger, userRepository abstractions.UserRepositor
 	}
 }
 
-func (us *UserService) SignUp(user *abstractions.UserModel) (*abstractions.User, error) {
+func (us *UserService) SignUp(user *commonAbstractions.UserModel) (*commonAbstractions.User, error) {
 
-	us.logger.LogTrace("SignUp")
+	us.logger.LogTrace("SignUp", user)
+
 
 	userPassword := user.Password
 	hashedUserPassword, err := us.passwordHasher.HashAndSalt(userPassword)
@@ -42,14 +44,14 @@ func (us *UserService) SignUp(user *abstractions.UserModel) (*abstractions.User,
 		
 	}
 
-	signUpResult := &abstractions.User{
+	signUpResult := &commonAbstractions.User{
 		Username: user.Username,
 	}
 
 	return signUpResult, nil
 }
 
-func (us *UserService) SignIn(user *abstractions.UserModel) (*abstractions.User, error) {
+func (us *UserService) SignIn(user *commonAbstractions.UserModel) (*commonAbstractions.User, error) {
 
 	returnedUser, err := us.userRepository.GetUser(user.Password)
 	if err != nil {
@@ -66,7 +68,7 @@ func (us *UserService) SignIn(user *abstractions.UserModel) (*abstractions.User,
 		return nil, errors.New("")
 	}
 
-	signInResult := &abstractions.User{
+	signInResult := &commonAbstractions.User{
 		Username: user.Username,
 	}
 
