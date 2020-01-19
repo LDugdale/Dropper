@@ -3,18 +3,16 @@ syntax = "proto3";
 package proto;
 
 service AuthenticationService {
-    rpc CreateToken(UserAuthenticationDetails) returns (CreateTokenResult) {}
+    rpc CreateToken(ClaimsDetails) returns (TokenResult) {}
     rpc ValidateToken(Token) returns (ValidateTokenResult) {}
-    rpc RefreshToken(Token) returns (CreateTokenResult) {}
+    rpc RefreshToken(Token) returns (TokenResult) {}
 }
 
-message UserAuthenticationDetails {
+message ClaimsDetails {
     string username = 1;
 }
 
-message CreateTokenResult {
-    bool isSuccess = 1;
-    int32 statusCode = 2;
+message TokenResult {
     string token = 3;
 }
 
@@ -23,5 +21,5 @@ message Token {
 }
 
 message ValidateTokenResult {
-    bool isSuccess = 1;
-    int32 statusCode = 2;}
+    bool isValid = 1;
+}

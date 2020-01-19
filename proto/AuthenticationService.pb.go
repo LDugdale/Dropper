@@ -24,94 +24,78 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type UserAuthenticationDetails struct {
+type ClaimsDetails struct {
 	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UserAuthenticationDetails) Reset()         { *m = UserAuthenticationDetails{} }
-func (m *UserAuthenticationDetails) String() string { return proto.CompactTextString(m) }
-func (*UserAuthenticationDetails) ProtoMessage()    {}
-func (*UserAuthenticationDetails) Descriptor() ([]byte, []int) {
+func (m *ClaimsDetails) Reset()         { *m = ClaimsDetails{} }
+func (m *ClaimsDetails) String() string { return proto.CompactTextString(m) }
+func (*ClaimsDetails) ProtoMessage()    {}
+func (*ClaimsDetails) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b349bfd62d52c6a4, []int{0}
 }
 
-func (m *UserAuthenticationDetails) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UserAuthenticationDetails.Unmarshal(m, b)
+func (m *ClaimsDetails) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ClaimsDetails.Unmarshal(m, b)
 }
-func (m *UserAuthenticationDetails) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UserAuthenticationDetails.Marshal(b, m, deterministic)
+func (m *ClaimsDetails) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ClaimsDetails.Marshal(b, m, deterministic)
 }
-func (m *UserAuthenticationDetails) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserAuthenticationDetails.Merge(m, src)
+func (m *ClaimsDetails) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClaimsDetails.Merge(m, src)
 }
-func (m *UserAuthenticationDetails) XXX_Size() int {
-	return xxx_messageInfo_UserAuthenticationDetails.Size(m)
+func (m *ClaimsDetails) XXX_Size() int {
+	return xxx_messageInfo_ClaimsDetails.Size(m)
 }
-func (m *UserAuthenticationDetails) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserAuthenticationDetails.DiscardUnknown(m)
+func (m *ClaimsDetails) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClaimsDetails.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserAuthenticationDetails proto.InternalMessageInfo
+var xxx_messageInfo_ClaimsDetails proto.InternalMessageInfo
 
-func (m *UserAuthenticationDetails) GetUsername() string {
+func (m *ClaimsDetails) GetUsername() string {
 	if m != nil {
 		return m.Username
 	}
 	return ""
 }
 
-type CreateTokenResult struct {
-	IsSuccess            bool     `protobuf:"varint,1,opt,name=isSuccess,proto3" json:"isSuccess,omitempty"`
-	StatusCode           int32    `protobuf:"varint,2,opt,name=statusCode,proto3" json:"statusCode,omitempty"`
+type TokenResult struct {
 	Token                string   `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateTokenResult) Reset()         { *m = CreateTokenResult{} }
-func (m *CreateTokenResult) String() string { return proto.CompactTextString(m) }
-func (*CreateTokenResult) ProtoMessage()    {}
-func (*CreateTokenResult) Descriptor() ([]byte, []int) {
+func (m *TokenResult) Reset()         { *m = TokenResult{} }
+func (m *TokenResult) String() string { return proto.CompactTextString(m) }
+func (*TokenResult) ProtoMessage()    {}
+func (*TokenResult) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b349bfd62d52c6a4, []int{1}
 }
 
-func (m *CreateTokenResult) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateTokenResult.Unmarshal(m, b)
+func (m *TokenResult) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TokenResult.Unmarshal(m, b)
 }
-func (m *CreateTokenResult) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateTokenResult.Marshal(b, m, deterministic)
+func (m *TokenResult) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TokenResult.Marshal(b, m, deterministic)
 }
-func (m *CreateTokenResult) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateTokenResult.Merge(m, src)
+func (m *TokenResult) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TokenResult.Merge(m, src)
 }
-func (m *CreateTokenResult) XXX_Size() int {
-	return xxx_messageInfo_CreateTokenResult.Size(m)
+func (m *TokenResult) XXX_Size() int {
+	return xxx_messageInfo_TokenResult.Size(m)
 }
-func (m *CreateTokenResult) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateTokenResult.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateTokenResult proto.InternalMessageInfo
-
-func (m *CreateTokenResult) GetIsSuccess() bool {
-	if m != nil {
-		return m.IsSuccess
-	}
-	return false
+func (m *TokenResult) XXX_DiscardUnknown() {
+	xxx_messageInfo_TokenResult.DiscardUnknown(m)
 }
 
-func (m *CreateTokenResult) GetStatusCode() int32 {
-	if m != nil {
-		return m.StatusCode
-	}
-	return 0
-}
+var xxx_messageInfo_TokenResult proto.InternalMessageInfo
 
-func (m *CreateTokenResult) GetToken() string {
+func (m *TokenResult) GetToken() string {
 	if m != nil {
 		return m.Token
 	}
@@ -158,8 +142,7 @@ func (m *Token) GetToken() string {
 }
 
 type ValidateTokenResult struct {
-	IsSuccess            bool     `protobuf:"varint,1,opt,name=isSuccess,proto3" json:"isSuccess,omitempty"`
-	StatusCode           int32    `protobuf:"varint,2,opt,name=statusCode,proto3" json:"statusCode,omitempty"`
+	IsValid              bool     `protobuf:"varint,1,opt,name=isValid,proto3" json:"isValid,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -190,23 +173,16 @@ func (m *ValidateTokenResult) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ValidateTokenResult proto.InternalMessageInfo
 
-func (m *ValidateTokenResult) GetIsSuccess() bool {
+func (m *ValidateTokenResult) GetIsValid() bool {
 	if m != nil {
-		return m.IsSuccess
+		return m.IsValid
 	}
 	return false
 }
 
-func (m *ValidateTokenResult) GetStatusCode() int32 {
-	if m != nil {
-		return m.StatusCode
-	}
-	return 0
-}
-
 func init() {
-	proto.RegisterType((*UserAuthenticationDetails)(nil), "proto.UserAuthenticationDetails")
-	proto.RegisterType((*CreateTokenResult)(nil), "proto.CreateTokenResult")
+	proto.RegisterType((*ClaimsDetails)(nil), "proto.ClaimsDetails")
+	proto.RegisterType((*TokenResult)(nil), "proto.TokenResult")
 	proto.RegisterType((*Token)(nil), "proto.Token")
 	proto.RegisterType((*ValidateTokenResult)(nil), "proto.ValidateTokenResult")
 }
@@ -214,24 +190,22 @@ func init() {
 func init() { proto.RegisterFile("AuthenticationService.proto", fileDescriptor_b349bfd62d52c6a4) }
 
 var fileDescriptor_b349bfd62d52c6a4 = []byte{
-	// 257 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x50, 0x3d, 0x4f, 0xc3, 0x30,
-	0x10, 0x6d, 0x40, 0x41, 0xed, 0x51, 0x06, 0x0e, 0x90, 0x42, 0xf8, 0x50, 0xe4, 0xa9, 0x53, 0x07,
-	0x18, 0x40, 0x62, 0x42, 0x65, 0x63, 0x73, 0x80, 0xdd, 0xa4, 0x07, 0xb5, 0x08, 0x31, 0xf2, 0x9d,
-	0xf9, 0xb3, 0xfc, 0x19, 0x84, 0x1b, 0xd1, 0x54, 0x04, 0x26, 0x26, 0xeb, 0xdd, 0x7b, 0xe7, 0x77,
-	0xef, 0xc1, 0xd1, 0x75, 0x90, 0x05, 0x35, 0x62, 0x2b, 0x23, 0xd6, 0x35, 0x25, 0xf9, 0x77, 0x5b,
-	0xd1, 0xf4, 0xcd, 0x3b, 0x71, 0x98, 0xc6, 0x47, 0x5d, 0xc0, 0xe1, 0x3d, 0x93, 0x5f, 0x57, 0xde,
-	0x90, 0x18, 0x5b, 0x33, 0xe6, 0x30, 0x0c, 0x4c, 0xbe, 0x31, 0xaf, 0x94, 0x25, 0x45, 0x32, 0x19,
-	0xe9, 0x6f, 0xac, 0x9e, 0x61, 0x77, 0xe6, 0xc9, 0x08, 0xdd, 0xb9, 0x17, 0x6a, 0x34, 0x71, 0xa8,
-	0x05, 0x8f, 0x61, 0x64, 0xb9, 0x0c, 0x55, 0x45, 0xcc, 0x71, 0x63, 0xa8, 0x57, 0x03, 0x3c, 0x05,
-	0x60, 0x31, 0x12, 0x78, 0xe6, 0xe6, 0x94, 0x6d, 0x14, 0xc9, 0x24, 0xd5, 0x9d, 0x09, 0xee, 0x43,
-	0x2a, 0x5f, 0x9f, 0x65, 0x9b, 0xd1, 0x6b, 0x09, 0xd4, 0x09, 0xa4, 0xd1, 0x62, 0x45, 0x27, 0x5d,
-	0xba, 0x84, 0xbd, 0x07, 0x53, 0xdb, 0xf9, 0x7f, 0x5e, 0x72, 0xf6, 0x91, 0xc0, 0x41, 0x6f, 0x79,
-	0x78, 0x0b, 0xdb, 0x9d, 0xd8, 0x58, 0x2c, 0xdb, 0x9c, 0xfe, 0xda, 0x61, 0x9e, 0xb5, 0x8a, 0x1f,
-	0x65, 0xa9, 0x01, 0x5e, 0xc1, 0xce, 0xda, 0xed, 0x38, 0x6e, 0xc5, 0x11, 0xe5, 0x79, 0x8b, 0x7a,
-	0xf2, 0xa9, 0x01, 0x5e, 0xc2, 0x58, 0xd3, 0x93, 0x27, 0x5e, 0xf4, 0xed, 0xfe, 0x61, 0xfb, 0xb8,
-	0x15, 0xa9, 0xf3, 0xcf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x40, 0x9d, 0x09, 0x53, 0x20, 0x02, 0x00,
-	0x00,
+	// 228 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x8f, 0x41, 0x4b, 0x03, 0x31,
+	0x10, 0x85, 0x1b, 0x64, 0xb5, 0x4e, 0xdb, 0xcb, 0x58, 0x61, 0x89, 0x08, 0x12, 0x2f, 0x82, 0x50,
+	0xa1, 0x9e, 0xc4, 0x93, 0xd4, 0x5f, 0x10, 0xc5, 0x7b, 0xac, 0x23, 0x0d, 0xa6, 0x89, 0x24, 0xb3,
+	0xfe, 0x41, 0xff, 0x98, 0x98, 0x76, 0x35, 0x0b, 0x39, 0x85, 0x6f, 0xde, 0xcb, 0xcc, 0x7b, 0x70,
+	0xf6, 0xd0, 0xf1, 0x86, 0x3c, 0xdb, 0xb5, 0x61, 0x1b, 0xfc, 0x13, 0xc5, 0x2f, 0xbb, 0xa6, 0xc5,
+	0x67, 0x0c, 0x1c, 0xb0, 0xc9, 0x8f, 0xba, 0x86, 0xd9, 0xca, 0x19, 0xbb, 0x4d, 0x8f, 0xc4, 0xc6,
+	0xba, 0x84, 0x12, 0xc6, 0x5d, 0xa2, 0xe8, 0xcd, 0x96, 0x5a, 0x71, 0x21, 0xae, 0x8e, 0xf5, 0x1f,
+	0xab, 0x4b, 0x98, 0x3c, 0x87, 0x0f, 0xf2, 0x9a, 0x52, 0xe7, 0x18, 0xe7, 0xd0, 0xf0, 0x2f, 0xb6,
+	0x07, 0xd9, 0xb7, 0x03, 0x75, 0x0e, 0x4d, 0x36, 0xfd, 0xcb, 0xa2, 0x94, 0x6f, 0xe0, 0xe4, 0xc5,
+	0x38, 0xfb, 0x66, 0x98, 0xca, 0x5d, 0x2d, 0x1c, 0xd9, 0x94, 0x85, 0x6c, 0x1f, 0xeb, 0x1e, 0x97,
+	0xdf, 0x02, 0x4e, 0xab, 0x45, 0xf0, 0x0e, 0x26, 0xab, 0x48, 0xfd, 0x22, 0x9c, 0xef, 0x9a, 0x2d,
+	0x06, 0x7d, 0x24, 0xee, 0xa7, 0xc5, 0x31, 0x35, 0xc2, 0x7b, 0x98, 0x0d, 0x52, 0xe0, 0xb4, 0xb4,
+	0x49, 0xb9, 0xa7, 0x4a, 0x52, 0x35, 0xc2, 0x25, 0x4c, 0x35, 0xbd, 0x47, 0x4a, 0x9b, 0xda, 0xdf,
+	0xea, 0xc1, 0xd7, 0xc3, 0x3c, 0xbc, 0xfd, 0x09, 0x00, 0x00, 0xff, 0xff, 0x93, 0x0b, 0x3d, 0x5a,
+	0x94, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -246,9 +220,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AuthenticationServiceClient interface {
-	CreateToken(ctx context.Context, in *UserAuthenticationDetails, opts ...grpc.CallOption) (*CreateTokenResult, error)
+	CreateToken(ctx context.Context, in *ClaimsDetails, opts ...grpc.CallOption) (*TokenResult, error)
 	ValidateToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*ValidateTokenResult, error)
-	RefreshToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*CreateTokenResult, error)
+	RefreshToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*TokenResult, error)
 }
 
 type authenticationServiceClient struct {
@@ -259,8 +233,8 @@ func NewAuthenticationServiceClient(cc *grpc.ClientConn) AuthenticationServiceCl
 	return &authenticationServiceClient{cc}
 }
 
-func (c *authenticationServiceClient) CreateToken(ctx context.Context, in *UserAuthenticationDetails, opts ...grpc.CallOption) (*CreateTokenResult, error) {
-	out := new(CreateTokenResult)
+func (c *authenticationServiceClient) CreateToken(ctx context.Context, in *ClaimsDetails, opts ...grpc.CallOption) (*TokenResult, error) {
+	out := new(TokenResult)
 	err := c.cc.Invoke(ctx, "/proto.AuthenticationService/CreateToken", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -277,8 +251,8 @@ func (c *authenticationServiceClient) ValidateToken(ctx context.Context, in *Tok
 	return out, nil
 }
 
-func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*CreateTokenResult, error) {
-	out := new(CreateTokenResult)
+func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*TokenResult, error) {
+	out := new(TokenResult)
 	err := c.cc.Invoke(ctx, "/proto.AuthenticationService/RefreshToken", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -288,22 +262,22 @@ func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *Toke
 
 // AuthenticationServiceServer is the server API for AuthenticationService service.
 type AuthenticationServiceServer interface {
-	CreateToken(context.Context, *UserAuthenticationDetails) (*CreateTokenResult, error)
+	CreateToken(context.Context, *ClaimsDetails) (*TokenResult, error)
 	ValidateToken(context.Context, *Token) (*ValidateTokenResult, error)
-	RefreshToken(context.Context, *Token) (*CreateTokenResult, error)
+	RefreshToken(context.Context, *Token) (*TokenResult, error)
 }
 
 // UnimplementedAuthenticationServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedAuthenticationServiceServer struct {
 }
 
-func (*UnimplementedAuthenticationServiceServer) CreateToken(ctx context.Context, req *UserAuthenticationDetails) (*CreateTokenResult, error) {
+func (*UnimplementedAuthenticationServiceServer) CreateToken(ctx context.Context, req *ClaimsDetails) (*TokenResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateToken not implemented")
 }
 func (*UnimplementedAuthenticationServiceServer) ValidateToken(ctx context.Context, req *Token) (*ValidateTokenResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateToken not implemented")
 }
-func (*UnimplementedAuthenticationServiceServer) RefreshToken(ctx context.Context, req *Token) (*CreateTokenResult, error) {
+func (*UnimplementedAuthenticationServiceServer) RefreshToken(ctx context.Context, req *Token) (*TokenResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 
@@ -312,7 +286,7 @@ func RegisterAuthenticationServiceServer(s *grpc.Server, srv AuthenticationServi
 }
 
 func _AuthenticationService_CreateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserAuthenticationDetails)
+	in := new(ClaimsDetails)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -324,7 +298,7 @@ func _AuthenticationService_CreateToken_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/proto.AuthenticationService/CreateToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).CreateToken(ctx, req.(*UserAuthenticationDetails))
+		return srv.(AuthenticationServiceServer).CreateToken(ctx, req.(*ClaimsDetails))
 	}
 	return interceptor(ctx, in, info, handler)
 }

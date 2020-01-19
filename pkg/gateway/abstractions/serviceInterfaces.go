@@ -6,4 +6,5 @@ import (
 
 type UserService interface {
 	SignUp(user commonAbstractions.UserModel) (*commonAbstractions.User, error)
+	SignIn(user commonAbstractions.UserModel) (*commonAbstractions.User, error)
 }

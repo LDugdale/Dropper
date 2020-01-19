@@ -2,20 +2,20 @@ package main
 
 import (
 	"net"
+
 	pb "github.com/LDugdale/Dropper/proto"
 	"github.com/ldugdale/dropper/pkg/log"
-	//"github.com/LDugdale/Dropper/pkg/gRpc"
-	"google.golang.org/grpc"
+
+	"github.com/ldugdale/dropper/pkg/cryptography"
 	"github.com/ldugdale/dropper/pkg/database"
 	"github.com/ldugdale/dropper/pkg/services/userService/controller"
-	"github.com/ldugdale/dropper/pkg/services/userService/services"
 	"github.com/ldugdale/dropper/pkg/services/userService/data"
-	"github.com/ldugdale/dropper/pkg/cryptography"
+	"github.com/ldugdale/dropper/pkg/services/userService/services"
+	"google.golang.org/grpc"
 )
 
 var port = "localhost:7100"
 var dataSourceName = "root:password@(localhost)/dropper"
-
 
 func main() {
 
@@ -44,14 +44,14 @@ func initializeUserService(logger log.Logger) *controller.UserServiceServer {
 
 	database, err := database.NewDB(dataSourceName)
 	if err != nil {
-        logger.LogError(err)
+		logger.LogError(err)
 	}
 
 	passwordHasher := cryptography.NewPasswordHasher()
 
-	userRepository := *data.NewUserRepository(*database)
+	userRepository := *data.NewUserRepository(logger, *database)
 	userService := services.NewUserService(logger, &userRepository, passwordHasher)
 	userServiceServer := controller.NewUserServiceServer(logger, userService)
-	
+
 	return userServiceServer
 }

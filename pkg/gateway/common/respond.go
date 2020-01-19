@@ -16,7 +16,7 @@ func NewResponse(logger log.Logger) *Response{
 	}
 }
 
-func (r *Response)Respond(response http.ResponseWriter, request *http.Request, data interface{}, status int){
+func (r *Response)Respond(response http.ResponseWriter, request *http.Request, status int, data interface{}){
 
 	response.WriteHeader(status)
 

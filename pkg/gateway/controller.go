@@ -21,5 +21,6 @@ func NewController(logger log.Logger, userController controllers.UserController)
 }
 
 func (c *Controller) Start(){
+	c.logger.LogTrace("Controller Start")
 	c.userController.Routes()
 }
