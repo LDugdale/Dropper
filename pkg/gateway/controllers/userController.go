@@ -13,19 +13,21 @@ import (
 )
 
 type UserController struct {
-	router      *mux.Router
-	logger      log.Logger
-	response    common.Response
-	userService abstractions.UserService
+	router                *mux.Router
+	logger                log.Logger
+	response              common.Response
+	userService           abstractions.UserService
+	authenticationService abstractions.AuthenticationService
 }
 
-func NewUserController(logger log.Logger, router *mux.Router, response common.Response, userService abstractions.UserService) *UserController {
+func NewUserController(logger log.Logger, router *mux.Router, response common.Response, userService abstractions.UserService, authenticationService abstractions.AuthenticationService) *UserController {
 
 	userController := &UserController{
-		logger:      logger,
-		router:      router,
-		response:    response,
-		userService: userService,
+		logger:                logger,
+		router:                router,
+		response:              response,
+		userService:           userService,
+		authenticationService: authenticationService,
 	}
 
 	return userController
@@ -52,11 +54,29 @@ func (c *UserController) handleSignUp() http.HandlerFunc {
 
 		}
 
-		result, err := c.userService.SignUp(user)
+		signUpResult, err := c.userService.SignUp(user)
+		if err != nil {
+			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
+			return
+		}
+
+		tokenResult, err := c.authenticationService.CreateToken(signUpResult.Username)
+		if err != nil {
+			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
+			return
+		}
+
+		userResult := commonAbstractions.UserWithToken{
+			User: commonAbstractions.User{
+				Username: signUpResult.Username,
+			},
+			Token: *tokenResult,
+		}
+
 		if err != nil {
 			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
 		} else {
-			c.response.Respond(w, r, http.StatusOK, result)
+			c.response.Respond(w, r, http.StatusOK, userResult)
 		}
 
 	}
@@ -75,12 +95,29 @@ func (c *UserController) handleSignIn() http.HandlerFunc {
 
 		}
 
-		result, err := c.userService.SignIn(user)
+		signInResult, err := c.userService.SignIn(user)
+		if err != nil {
+			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
+			return
+		}
+		tokenResult, err := c.authenticationService.CreateToken(signInResult.Username)
+		if err != nil {
+			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
+			return
+		}
+
+		c.logger.LogTrace(tokenResult)
+		userResult := commonAbstractions.UserWithToken{
+			User: commonAbstractions.User{
+				Username: signInResult.Username,
+			},
+			Token: *tokenResult,
+		}
+
 		if err != nil {
 			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
 		} else {
-			c.response.Respond(w, r, http.StatusOK, result)
+			c.response.Respond(w, r, http.StatusOK, userResult)
 		}
-
 	}
 }

@@ -15,9 +15,4 @@ message UserDetails {
 
 message UserResult {
     string Username = 1;
-    Error Error = 2;
-}
-
-message Error {
-    string message = 1;
 }

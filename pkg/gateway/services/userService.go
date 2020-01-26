@@ -8,16 +8,14 @@ import (
 )
 
 type UserService struct {
-	logger                      log.Logger
-	userServiceClient           pb.UserServiceClient
-	authenticationServiceClient pb.AuthenticationServiceClient
+	logger            log.Logger
+	userServiceClient pb.UserServiceClient
 }
 
-func NewUserService(logger log.Logger, userServiceClient pb.UserServiceClient, authenticationServiceClient pb.AuthenticationServiceClient) *UserService {
+func NewUserService(logger log.Logger, userServiceClient pb.UserServiceClient) *UserService {
 	userService := &UserService{
-		logger:                      logger,
-		userServiceClient:           userServiceClient,
-		authenticationServiceClient: authenticationServiceClient,
+		logger:            logger,
+		userServiceClient: userServiceClient,
 	}
 
 	return userService
@@ -31,21 +29,9 @@ func (us *UserService) SignUp(user commonAbstractions.UserModel) (*commonAbstrac
 	}
 
 	result, err := us.userServiceClient.SignUp(context.Background(), userDetails)
-	us.logger.LogTrace("result :", result, err)
 	if err != nil {
 		return nil, err
 	}
-
-	claimsDetails := &pb.ClaimsDetails{
-		Username: user.Username,
-	}
-
-	tokenResult, err := us.authenticationServiceClient.CreateToken(context.Background(), claimsDetails)
-	if err != nil {
-		return nil, err
-	}
-
-	
 
 	userReturn := &commonAbstractions.User{
 		Username: result.Username,

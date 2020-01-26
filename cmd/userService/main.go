@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-var port = "localhost:7100"
+var port = "localhost:7101"
 var dataSourceName = "root:password@(localhost)/dropper"
 
 func main() {

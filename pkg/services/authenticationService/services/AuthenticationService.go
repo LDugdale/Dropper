@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/LDugdale/Dropper/pkg/commonAbstractions"
-
+	"github.com/LDugdale/Dropper/pkg/log"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -15,13 +15,19 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-type AuthenticationService struct{}
+type AuthenticationService struct {
+	logger log.Logger
+}
 
-func NewAuthenticationService() *AuthenticationService {
-	return &AuthenticationService{}
+func NewAuthenticationService(logger log.Logger) *AuthenticationService {
+	return &AuthenticationService{
+		logger: logger,
+	}
 }
 
 func (as AuthenticationService) CreateToken(userAuthenticationDetails *commonAbstractions.ClaimsDetails) (string, error) {
+
+	as.logger.LogTrace("CreateToken")
 
 	expirationTime := time.Now().Add(5 * time.Minute)
 
@@ -36,7 +42,8 @@ func (as AuthenticationService) CreateToken(userAuthenticationDetails *commonAbs
 
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-
+		as.logger.LogTrace("There was an error")
+		return "", err
 	}
 
 	return tokenString, nil

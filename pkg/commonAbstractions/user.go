@@ -8,3 +8,8 @@ type UserModel struct {
 type User struct {
 	Username string
 }
+
+type UserWithToken struct {
+	User
+	Token string
+}

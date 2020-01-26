@@ -2,23 +2,26 @@ package controller
 
 import (
 	"github.com/LDugdale/Dropper/pkg/commonAbstractions"
+	"github.com/LDugdale/Dropper/pkg/log"
 	"github.com/LDugdale/Dropper/pkg/services/authenticationService/abstractions"
 	pb "github.com/LDugdale/Dropper/proto"
 	"golang.org/x/net/context"
 )
 
 type AuthenticationServiceServer struct {
+	logger                log.Logger
 	authenticationService abstractions.AuthenticationService
 }
 
-func NewAuthenticationServiceServer(authenticationService abstractions.AuthenticationService) *AuthenticationServiceServer {
+func NewAuthenticationServiceServer(logger log.Logger, authenticationService abstractions.AuthenticationService) *AuthenticationServiceServer {
 	return &AuthenticationServiceServer{
+		logger:                logger,
 		authenticationService: authenticationService,
 	}
 }
 
 func (as AuthenticationServiceServer) CreateToken(context context.Context, claimsDetails *pb.ClaimsDetails) (*pb.TokenResult, error) {
-
+	as.logger.LogTrace("HIT AUTH sERVER")
 	claims := &commonAbstractions.ClaimsDetails{
 		Username: claimsDetails.Username,
 	}
