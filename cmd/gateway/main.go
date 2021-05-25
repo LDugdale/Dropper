@@ -30,6 +30,7 @@ func run() error {
 	// logger, controller, router := initializeGateway()
 	logger := log.NewLogger()
 	router := mux.NewRouter().StrictSlash(true)
+	router.Use(mux.CORSMethodMiddleware(router))
 
 	//defer conn.Close()
 

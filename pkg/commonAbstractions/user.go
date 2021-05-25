@@ -6,10 +6,10 @@ type UserModel struct {
 }
 
 type User struct {
-	Username string
+	Username string `json:"username"`
 }
 
 type UserWithToken struct {
 	User
-	Token string
+	Token string `json:"token"`
 }

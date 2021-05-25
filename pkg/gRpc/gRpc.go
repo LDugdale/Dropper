@@ -62,5 +62,6 @@ func ExtractProtobufMetadata(err error) string {
 			}
 		}
 	}
+
 	return errorMessage
 }

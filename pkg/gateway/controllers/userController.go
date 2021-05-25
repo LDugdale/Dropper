@@ -34,8 +34,8 @@ func NewUserController(logger log.Logger, router *mux.Router, response common.Re
 }
 
 func (c *UserController) Routes() {
-	c.router.HandleFunc("/user/signup", c.handleSignUp()).Methods("POST")
-	c.router.HandleFunc("/user/signin", c.handleSignIn()).Methods("POST")
+	c.router.HandleFunc("/user/signup", c.handleSignUp()).Methods(http.MethodPost, http.MethodOptions)
+	c.router.HandleFunc("/user/signin", c.handleSignIn()).Methods(http.MethodPost, http.MethodOptions)
 
 	c.logger.LogTrace("User controller routes started")
 
@@ -44,6 +44,14 @@ func (c *UserController) Routes() {
 func (c *UserController) handleSignUp() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		if r.Method == http.MethodOptions {
+			c.logger.LogTrace("options")
+
+			return
+		}
 
 		c.logger.LogTrace("handleSignUp")
 
@@ -85,7 +93,14 @@ func (c *UserController) handleSignUp() http.HandlerFunc {
 func (c *UserController) handleSignIn() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		if r.Method == http.MethodOptions {
+			c.logger.LogTrace("options")
 
+			return
+		}
 		c.logger.LogTrace("handleSignIn")
 
 		var user commonAbstractions.UserModel
@@ -117,6 +132,8 @@ func (c *UserController) handleSignIn() http.HandlerFunc {
 		if err != nil {
 			c.response.Respond(w, r, http.StatusBadRequest, gRpc.ExtractProtobufMetadata(err))
 		} else {
+			c.logger.LogTrace("success")
+
 			c.response.Respond(w, r, http.StatusOK, userResult)
 		}
 	}
